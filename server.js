@@ -19,6 +19,17 @@ const friends = [
     },
 ]
 
+// logging middleware here
+app.use((req, res, next) => {
+    // start time
+    const start = Date.now;
+    next();
+    // actions of the middleware goes here
+    const delta = Date.now - start;
+    console.log(`${req.method} ${req.url} Time: ${delta}ms`)
+    
+})
+
 app.get('/', (req, res)=>{
     // res.send('Hello from the server side!')
     res.send('hello from the server side!')
