@@ -3,6 +3,7 @@
 
 // -------------------------------------VARIABLES & MODULES DECLARATION-------------------------------------
 const express = require('express');
+const path = require('path');
 const app = express();
 const port = 8000;
 
@@ -24,6 +25,8 @@ app.use((req, res, next) => {
     
 })
 
+// this mounts any index file on public
+app.use('/site', express.static((path.join(__dirname, 'public'))));
 // in order to use req in post method using express
 // this basically does json.parse on the request string 
 // and allows us to do json manipulation
