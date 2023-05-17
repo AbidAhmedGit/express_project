@@ -3,13 +3,13 @@
 
 // -------------------------------------VARIABLES & MODULES DECLARATION-------------------------------------
 const express = require('express');
-const { getFriends, getOneFriend, postFriend } = require('./controller/friends.controller');
-const {getMsg, postMsg} = require('./controller/msg.controller');
-const getRoot = require('./controller/root.controller');
-
 const app = express();
 const port = 8000;
 
+// routers
+const friendsRouter = require('./routes/friendsRouter');
+const msgRouter = require('./routes/msgRouter');
+const rootRouter = require('./routes/rootRouter')
 
 // ------------------------------------------MIDDLEWARES-------------------------------------
 
@@ -25,27 +25,15 @@ app.use((req, res, next) => {
 })
 
 // in order to use req in post method using express
+// this basically does json.parse on the request string 
+// and allows us to do json manipulation
 // NOT needed for get methods
 app.use(express.json());
 
-
-// ------------------------------------GET: call controllers------------------------------------------
-
-app.get('/', getRoot);
-
-app.get('/friends', getFriends);
-
-// case for when we have a parameter passed in
-app.get('/friends/:frid', getOneFriend);
-
-app.get('/msg', getMsg);
-
-// ------------------------------------POST: call controllers------------------------------------------
-// post request through express -> add a friend but make id automatic
-app.post('/friends', postFriend)
-
-app.post('/msg', postMsg)
-
+// -------------------------------------Router calls-------------------------------------
+app.use('/friends', friendsRouter);
+app.use('/', rootRouter);
+app.use('/msg', msgRouter)
 
 // -------------------------------------SERVER LISTENING ON PORT-------------------------------------
 app.listen(port, ()=>{
